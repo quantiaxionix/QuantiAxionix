@@ -1,13 +1,14 @@
 // src/components/Career/CareerHero.jsx
 import React from "react";
+import { useTheme } from "../../ThemeProvider";
 
 /**
  * CareerHero.jsx
  * - Text update:
  *   - eyebrow + titleMain + titleSub use the same size.
- *   - eyebrow and titleMain are white.
+ *   - eyebrow and titleMain are theme-aware.
  *   - titleSub uses accentColor (#0097b2 by default).
- * - Visuals left unchanged.
+ * - Visuals theme-aware.
  */
 
 export default function CareerHero({
@@ -23,6 +24,7 @@ export default function CareerHero({
     "driving measurable growth for our partners.",
   ],
 }) {
+  const { colors } = useTheme();
   // center & radii (concentric)
   const cx = 800;
   const cy = 900;
@@ -44,8 +46,12 @@ export default function CareerHero({
   return (
     <section
       id="career"
-      className="relative bg-black text-white overflow-hidden"
-      style={{ fontFamily: "'Playfair Display', serif" }}
+      className="relative overflow-hidden transition-colors duration-300"
+      style={{ 
+        fontFamily: "'Playfair Display', serif",
+        backgroundColor: colors.bg.primary,
+        color: colors.text.primary,
+      }}
       aria-labelledby="career-heading"
     >
       {/* SVG background (unchanged) */}
@@ -165,14 +171,14 @@ export default function CareerHero({
       {/* Content container - only text updated below */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-28 md:py-32 lg:py-40">
         <div className="text-center">
-          {/* eyebrow: white and same size as titles */}
-          <p className="mb-4 text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-wide" style={{ color: "#ffffff" }}>
+          {/* eyebrow: theme-aware and same size as titles */}
+          <p className="mb-4 text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-wide" style={{ color: colors.text.primary }}>
             {eyebrow}
           </p>
 
           <h1 id="career-heading" className="mx-auto max-w-3xl">
-            {/* titleMain: white, same size as eyebrow */}
-            <span className="block text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight" style={{ color: "#ffffff" }}>
+            {/* titleMain: theme-aware, same size as eyebrow */}
+            <span className="block text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight" style={{ color: colors.text.primary }}>
               {titleMain}
             </span>
 
@@ -183,7 +189,7 @@ export default function CareerHero({
           </h1>
 
           {/* description split into 3 lines */}
-          <div className="mt-6 mx-auto max-w-3xl text-sm md:text-base lg:text-lg text-white/75 leading-relaxed space-y-2">
+          <div className="mt-6 mx-auto max-w-3xl text-sm md:text-base lg:text-lg leading-relaxed space-y-2" style={{ color: colors.text.secondary }}>
             {descriptionLines.map((line, idx) => (
               <p key={idx} className="m-0">
                 {line}

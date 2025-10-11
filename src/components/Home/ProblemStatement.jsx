@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTheme } from "../../ThemeProvider";
 
 // src/components/ProblemStatement.jsx
 // Updated to QUANTI AXIONIX–relevant problems and details
@@ -43,17 +44,28 @@ QUANTI AXIONIX embeds security and compliance into the development lifecycle —
 
 export default function ProblemStatement() {
   const [openIndex, setOpenIndex] = useState(null);
+  const { colors } = useTheme();
 
   const toggleProblem = (idx) => {
     setOpenIndex(openIndex === idx ? null : idx);
   };
 
   return (
-    <section className="w-full bg-black text-white py-24" id="problems">
+    <section 
+      className="w-full py-24 transition-colors duration-300" 
+      id="problems"
+      style={{
+        backgroundColor: colors.bg.primary,
+        color: colors.text.primary,
+      }}
+    >
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
         {/* Left column */}
         <div className="flex flex-col justify-between">
-            <p className="uppercase text-white/40 text-sm tracking-widest mb-2">
+          <p 
+            className="uppercase text-sm tracking-widest mb-2"
+            style={{ color: colors.text.muted }}
+          >
             Challenges
           </p>
           <h3
@@ -70,7 +82,8 @@ export default function ProblemStatement() {
           {problems.map((p, idx) => (
             <div
               key={idx}
-              className="border-b border-white/20 pb-4 cursor-pointer"
+              className="border-b pb-4 cursor-pointer transition-colors duration-300"
+              style={{ borderColor: colors.border.primary }}
               onClick={() => toggleProblem(idx)}
             >
               <div className="flex justify-between items-start gap-4">
@@ -81,14 +94,22 @@ export default function ProblemStatement() {
                   >
                     {p.title}
                   </h4>
-                  <p className="text-white/80 text-sm mt-1">{p.subtitle}</p>
+                  <p 
+                    className="text-sm mt-1"
+                    style={{ color: colors.text.secondary }}
+                  >
+                    {p.subtitle}
+                  </p>
                 </div>
 
                 <span className="text-2xl text-[#0097b2] select-none">{openIndex === idx ? '−' : '+'}</span>
               </div>
 
               {openIndex === idx && (
-                <div className="mt-3 text-white/80 text-sm leading-relaxed">
+                <div 
+                  className="mt-3 text-sm leading-relaxed"
+                  style={{ color: colors.text.secondary }}
+                >
                   {p.details.split("\n\n").map((para, i) => (
                     <p key={i} className="mb-3">
                       {para}

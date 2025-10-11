@@ -2,11 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { Link as ScrollLink } from "react-scroll";
 import { Link as RouterLink, useLocation } from "react-router-dom";
+import { BsSun, BsMoon } from "react-icons/bs";
+import { useTheme } from "../ThemeProvider";
 import logo from "../assets/Logo.jpg"; // adjust path if needed
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { isDark, toggleTheme, colors } = useTheme();
 
   // Close mobile menu on escape
   useEffect(() => {
@@ -28,27 +31,28 @@ export default function Navbar() {
     { name: "Home", to: "/", type: "route" },
     { name: "Product", to: "product", type: "scroll" },
     { name: "About", to: "about", type: "scroll" },
+    { name: "Blogs", to: "/blogs", type: "route" },
     { name: "Career", to: "/career", type: "route" },
     { name: "Get in Touch", to: "/contact", type: "route" },
   ];
 
-  // helper classes
-  const plainDesktopClass =
-    "text-white text-base font-medium hover:text-[#0097b2] transition cursor-pointer";
-  // boxedClass: RECTANGLE (no rounded corners) + white text
-  const boxedClass =
-    "inline-flex items-center px-5 py-2 border border-[#0097b2] bg-transparent text-white text-base font-medium shadow-sm hover:bg-[#0097b2] hover:text-black transition cursor-pointer";
+  // helper classes - now theme-aware
+  const plainDesktopClass = `text-base font-medium hover:text-[#0097b2] transition cursor-pointer`;
+  
+  const boxedClass = `inline-flex items-center px-5 py-2 border border-[#0097b2] bg-transparent text-base font-medium shadow-sm hover:bg-[#0097b2] transition cursor-pointer`;
 
-  const plainMobileClass =
-    "block w-full text-center text-white text-base font-medium hover:text-[#0097b2] transition cursor-pointer py-3 rounded-md";
-  // boxedMobileClass: RECTANGLE (no rounded corners) + white text
-  const boxedMobileClass =
-    "block w-full text-center px-5 py-3 border border-[#0097b2] text-white text-base font-medium hover:bg-[#0097b2] hover:text-black transition cursor-pointer";
+  const plainMobileClass = `block w-full text-center text-base font-medium hover:text-[#0097b2] transition cursor-pointer py-3 rounded-md`;
+  
+  const boxedMobileClass = `block w-full text-center px-5 py-3 border border-[#0097b2] text-base font-medium hover:bg-[#0097b2] transition cursor-pointer`;
 
   return (
     <header
-      className="fixed top-0 left-0 w-full bg-black text-white z-50 shadow-md"
-      style={{ fontFamily: "'Playfair Display', serif" }}
+      className="fixed top-0 left-0 w-full z-50 shadow-md transition-colors duration-300"
+      style={{ 
+        fontFamily: "'Playfair Display', serif",
+        backgroundColor: colors.bg.primary,
+        color: colors.text.primary
+      }}
     >
       <div className="w-full flex items-center justify-between h-20 px-6 md:px-10 lg:px-16">
         {/* Brand / Logo (clickable, navigates to home route / ) */}
@@ -78,7 +82,10 @@ export default function Navbar() {
                     to={item.to}
                     onClick={() => setOpen(false)}
                     className={boxedClass}
-                    style={{ borderRadius: 0 }}
+                    style={{ 
+                      borderRadius: 0,
+                      color: colors.text.primary,
+                    }}
                   >
                     {item.name}
                   </RouterLink>
@@ -92,6 +99,7 @@ export default function Navbar() {
                   to={item.to}
                   onClick={() => setOpen(false)}
                   className={plainDesktopClass}
+                  style={{ color: colors.text.primary }}
                 >
                   {item.name}
                 </RouterLink>
@@ -109,22 +117,60 @@ export default function Navbar() {
                 offset={-80}
                 onClick={() => setOpen(false)}
                 className={plainDesktopClass}
+                style={{ color: colors.text.primary }}
               >
                 {item.name}
               </ScrollLink>
             );
           })}
+          
+          {/* Theme toggle button */}
+          <button
+            onClick={toggleTheme}
+            aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+            className="p-2 rounded-lg border transition-all duration-300 hover:scale-110"
+            style={{
+              backgroundColor: colors.bg.card,
+              borderColor: colors.border.primary,
+              color: colors.text.primary,
+            }}
+          >
+            {isDark ? (
+              <BsSun className="h-5 w-5" />
+            ) : (
+              <BsMoon className="h-5 w-5" />
+            )}
+          </button>
         </nav>
 
-        {/* Mobile hamburger */}
-        <div className="md:hidden">
+        {/* Mobile hamburger and theme toggle */}
+        <div className="md:hidden flex items-center gap-2">
+          {/* Theme toggle for mobile */}
+          <button
+            onClick={toggleTheme}
+            aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+            className="p-2 rounded-lg border transition-all duration-300"
+            style={{
+              backgroundColor: colors.bg.card,
+              borderColor: colors.border.primary,
+              color: colors.text.primary,
+            }}
+          >
+            {isDark ? (
+              <BsSun className="h-4 w-4" />
+            ) : (
+              <BsMoon className="h-4 w-4" />
+            )}
+          </button>
+          
+          {/* Hamburger button */}
           <button
             onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-label="Toggle navigation"
             className="inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0097b2]"
             style={{
-              color: "#ffffff",
+              color: colors.text.primary,
               background: open ? "#0097b2" : "transparent",
             }}
           >
@@ -141,7 +187,13 @@ export default function Navbar() {
 
       {/* mobile menu */}
       {open && (
-        <div className="md:hidden bg-black px-4 pb-6 border-t border-white/10">
+        <div 
+          className="md:hidden px-4 pb-6 border-t transition-colors duration-300"
+          style={{
+            backgroundColor: colors.bg.primary,
+            borderColor: colors.border.primary,
+          }}
+        >
           <div className="flex flex-col gap-3 mt-3">
             {navItems.map((item) =>
               item.type === "route" ? (
@@ -151,7 +203,10 @@ export default function Navbar() {
                     to={item.to}
                     onClick={() => setOpen(false)}
                     className={boxedMobileClass}
-                    style={{ borderRadius: 0 }}
+                    style={{ 
+                      borderRadius: 0,
+                      color: colors.text.primary,
+                    }}
                   >
                     {item.name}
                   </RouterLink>
@@ -161,6 +216,7 @@ export default function Navbar() {
                     to={item.to}
                     onClick={() => setOpen(false)}
                     className={plainMobileClass}
+                    style={{ color: colors.text.primary }}
                   >
                     {item.name}
                   </RouterLink>
@@ -182,6 +238,7 @@ export default function Navbar() {
                     }
                   }}
                   className={plainMobileClass}
+                  style={{ color: colors.text.primary }}
                 >
                   {item.name}
                 </ScrollLink>

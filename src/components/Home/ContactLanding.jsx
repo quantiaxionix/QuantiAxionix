@@ -1,5 +1,6 @@
 // src/pages/ContactLanding.jsx
 import React from "react";
+import { useTheme } from "../../ThemeProvider";
 
 /**
  * ContactLanding.jsx
@@ -14,17 +15,26 @@ import React from "react";
 const ACCENT = "#0097b2";
 
 export default function ContactLanding() {
+  const { colors, isDark } = useTheme();
+  
   // dotted background style for the framed box
   const dottedBg = {
     backgroundImage:
-      // small teal dots on dark, repeating radial pattern
+      // small teal dots on themed background, repeating radial pattern
       `radial-gradient(${ACCENT} 0.6px, rgba(0,0,0,0) 0.6px)`,
     backgroundSize: "10px 10px",
-    backgroundColor: "#0b0b0b",
+    backgroundColor: isDark ? "#0b0b0b" : "#f5f5f5",
   };
 
   return (
-    <div className="min-h-screen bg-[#000000] text-white" style={{ fontFamily: "'Playfair Display', serif" }}>
+    <div 
+      className="min-h-screen transition-colors duration-300" 
+      style={{ 
+        fontFamily: "'Playfair Display', serif",
+        backgroundColor: colors.bg.primary,
+        color: colors.text.primary,
+      }}
+    >
       {/* NAV SPACER (if you have a fixed navbar) */}
       <div className="h-20" />
 
@@ -62,7 +72,10 @@ export default function ContactLanding() {
 
                 {/* Centered content */}
                 <div className="flex flex-col items-center text-center">
-                  <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight" style={{ color: "white" }}>
+                  <h1 
+                    className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight" 
+                    style={{ color: colors.text.primary }}
+                  >
                     <span className="block">Ready to rethink</span>
                     <span className="block" style={{ color: ACCENT }}>your software systems?</span>
                   </h1>
@@ -103,7 +116,10 @@ export default function ContactLanding() {
                 <span className="block text-[#0097b2]">any updates</span>
               </h2>
 
-              <p className="mt-4 text-white/80 max-w-lg">
+              <p 
+                className="mt-4 max-w-lg"
+                style={{ color: colors.text.secondary }}
+              >
                 Subscribe to our newsletter to receive the latest updates on products, our AI automation
                 capabilities, product launches, and how QUANTI AXIONIX helps companies ship faster while
                 reducing operational cost and complexity.
@@ -128,18 +144,35 @@ export default function ContactLanding() {
                   type="email"
                   placeholder="Your email address"
                   required
-                  className="w-full sm:flex-1 bg-transparent border-b border-white/20 focus:border-[#0097b2] outline-none px-2 py-3 text-white placeholder:text-white/40"
-                  style={{ minWidth: 260 }}
+                  className="w-full sm:flex-1 bg-transparent border-b focus:border-[#0097b2] outline-none px-2 py-3"
+                  style={{ 
+                    minWidth: 260,
+                    color: colors.text.primary,
+                    borderColor: colors.border.primary,
+                  }}
                 />
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-md border border-[#0097b2] bg-[#000000] text-white font-medium hover:bg-[#0097b2] hover:text-black transition"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-md border border-[#0097b2] font-medium hover:bg-[#0097b2] transition"
+                  style={{
+                    backgroundColor: colors.bg.primary,
+                    color: colors.text.primary,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.color = colors.bg.primary;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.color = colors.text.primary;
+                  }}
                 >
                   Subscribe
                 </button>
               </form>
 
-              <p className="mt-3 text-xs text-white/60 max-w-sm">
+              <p 
+                className="mt-3 text-xs max-w-sm"
+                style={{ color: colors.text.muted }}
+              >
                 We respect your privacy. Unsubscribe anytime.
               </p>
             </div>

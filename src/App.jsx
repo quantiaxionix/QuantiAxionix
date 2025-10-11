@@ -1,6 +1,7 @@
 // src/App.jsx
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useTheme } from "./ThemeProvider";
 
 import Navbar from "./components/Navbar";
 import HomeHero from "./components/Home/HomeHero";
@@ -14,6 +15,7 @@ import CompanyIntro from "./components/Home/CompanyIntro";
 import ProblemStatement from "./components/Home/ProblemStatement";
 import SolutionSection from "./components/Home/SolutionSection";
 import ContactLanding from "./components/Home/ContactLanding";
+import BlogsComingSoon from "./components/Blogs/BlogsComingSoon";
 import Footer from "./components/Footer";
 
 /**
@@ -21,6 +23,7 @@ import Footer from "./components/Footer";
  *
  * Routes:
  *  - "/"        -> HomeMain (one-page home)
+ *  - "/blogs"   -> BlogsPage (coming soon)
  *  - "/career"  -> CareerPage
  *  - "/contact" -> ContactPage (Get in touch)
  *  - "*"        -> redirect to "/"
@@ -65,13 +68,31 @@ function ContactPage() {
   );
 }
 
+function BlogsPage() {
+  return (
+    <div className="pt-20">
+      <BlogsComingSoon />
+      <Footer />
+    </div>
+  );
+}
+
 export default function App() {
+  const { colors } = useTheme();
+  
   return (
     <BrowserRouter>
-      <div className="App bg-[#000000] min-h-screen text-white">
+      <div 
+        className="App min-h-screen transition-colors duration-300"
+        style={{
+          backgroundColor: colors.bg.primary,
+          color: colors.text.primary,
+        }}
+      >
         <Navbar />
         <Routes>
           <Route path="/" element={<HomeMain />} />
+          <Route path="/blogs" element={<BlogsPage />} />
           <Route path="/career" element={<CareerPage />} />
           <Route path="/contact" element={<ContactPage />} />
           {/* fallback */}

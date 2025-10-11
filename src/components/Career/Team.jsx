@@ -1,6 +1,7 @@
 // src/components/Team.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useTheme } from "../../ThemeProvider";
 import michaelImg from "../../assets/logo.png";
 import member1 from "../../assets/logo.png";
 import member2 from "../../assets/logo.png";
@@ -68,6 +69,8 @@ const MEMBERS = [
 ];
 
 export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
+  const { colors } = useTheme();
+  
   // state
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -275,8 +278,13 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
     <section
       id="team"
       ref={sectionRef}
-      className="w-full bg-black text-white py-16 md:py-28 px-6"
-      style={{ fontFamily: "'Playfair Display', serif", position: "relative" }}
+      className="w-full py-16 md:py-28 px-6 transition-colors duration-300"
+      style={{ 
+        fontFamily: "'Playfair Display', serif", 
+        position: "relative",
+        backgroundColor: colors.bg.primary,
+        color: colors.text.primary,
+      }}
       aria-labelledby="team-heading"
     >
       <div className="max-w-7xl mx-auto">
@@ -288,11 +296,14 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
             </p>
 
             <h2 id="team-heading" className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-3">
-              <span className="block text-white">From vision to reality:</span>
-              <span className="block text-white/95">Meet the QuantiAxionix team</span>
+              <span className="block" style={{ color: colors.text.primary }}>From vision to reality:</span>
+              <span className="block" style={{ color: colors.text.primary }}>Meet the QuantiAxionix team</span>
             </h2>
 
-            <div className="max-w-2xl text-sm md:text-base text-white/75 leading-relaxed space-y-4 mb-6">
+            <div 
+              className="max-w-2xl text-sm md:text-base leading-relaxed space-y-4 mb-6"
+              style={{ color: colors.text.secondary }}
+            >
               <p>
                 We’re a focused software house building SaaS platforms and full-stack applications that automate workflows,
                 stabilise delivery, and deliver measurable ROI. We value curiosity, craftsmanship and responsibility —
@@ -308,8 +319,17 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
               <div className="mt-4">
                 <RouterLink
                   to="/contact"
-                  className="inline-flex items-center justify-center px-5 py-2 font-medium border border-[#0097b2] text-white bg-transparent hover:bg-[#0097b2] hover:text-black transition cursor-pointer"
-                  style={{ borderRadius: 0 }}
+                  className="inline-flex items-center justify-center px-5 py-2 font-medium border border-[#0097b2] bg-transparent hover:bg-[#0097b2] transition cursor-pointer"
+                  style={{ 
+                    borderRadius: 0,
+                    color: colors.text.primary,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.color = colors.bg.primary;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.color = colors.text.primary;
+                  }}
                 >
                   Join our team
                 </RouterLink>
@@ -322,7 +342,7 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
 
         {/* separator */}
         <div className="mt-6">
-          <div className="w-full" style={{ height: 2, background: "#374151" }} />
+          <div className="w-full" style={{ height: 2, background: colors.border.primary }} />
         </div>
 
         {/* dividing section */}
@@ -330,7 +350,7 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
           <div
             aria-hidden="true"
             className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px"
-            style={{ background: "rgba(255,255,255,0.06)", transform: "translateX(-0.5px)" }}
+            style={{ background: colors.border.secondary, transform: "translateX(-0.5px)" }}
           />
 
           <div className="grid md:grid-cols-2 gap-8 items-start">
@@ -363,26 +383,64 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
 
             {/* RIGHT: plain details */}
             <div className="flex flex-col justify-start">
-              <h3 className="text-2xl md:text-3xl font-semibold text-white" style={{ opacity: visible ? 1 : 0 }}>
+              <h3 
+                className="text-2xl md:text-3xl font-semibold" 
+                style={{ 
+                  opacity: visible ? 1 : 0,
+                  color: colors.text.primary,
+                }}
+              >
                 {member.name}
               </h3>
 
-              <p className="text-sm md:text-base text-white/70 mt-2 mb-4" style={{ opacity: visible ? 1 : 0 }}>
+              <p 
+                className="text-sm md:text-base mt-2 mb-4" 
+                style={{ 
+                  opacity: visible ? 1 : 0,
+                  color: colors.text.secondary,
+                }}
+              >
                 {member.role}
               </p>
 
-              <p className="text-sm md:text-base text-white/75 leading-relaxed" style={{ opacity: visible ? 1 : 0 }}>
+              <p 
+                className="text-sm md:text-base leading-relaxed" 
+                style={{ 
+                  opacity: visible ? 1 : 0,
+                  color: colors.text.secondary,
+                }}
+              >
                 {member.short}
               </p>
 
-              <div className="mt-6 text-sm md:text-base text-white/75" style={{ opacity: visible ? 1 : 0 }}>
-                <div className="font-medium text-white/90 mb-1">Education</div>
+              <div 
+                className="mt-6 text-sm md:text-base" 
+                style={{ 
+                  opacity: visible ? 1 : 0,
+                  color: colors.text.secondary,
+                }}
+              >
+                <div 
+                  className="font-medium mb-1"
+                  style={{ color: colors.text.primary }}
+                >
+                  Education
+                </div>
                 <div className="mb-4">{member.education}</div>
 
-                <div className="font-medium text-white/90 mb-2">Background</div>
+                <div 
+                  className="font-medium mb-2"
+                  style={{ color: colors.text.primary }}
+                >
+                  Background
+                </div>
                 <ul className="list-disc list-inside ml-4 space-y-1">
                   {member.background.map((b, i) => (
-                    <li key={i} className="text-white/70 text-[14px] leading-tight">
+                    <li 
+                      key={i} 
+                      className="text-[14px] leading-tight"
+                      style={{ color: colors.text.secondary }}
+                    >
                       {b}
                     </li>
                   ))}
@@ -396,7 +454,20 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
                       key={m.id}
                       onClick={() => goTo(i)}
                       aria-label={`Show ${m.name}`}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${i === index ? "bg-white" : "bg-white/20 hover:bg-white/40"}`}
+                      className="w-3 h-3 rounded-full transition-all duration-300"
+                      style={{
+                        backgroundColor: i === index ? colors.text.primary : colors.border.primary,
+                      }}
+                      onMouseEnter={(e) => {
+                        if (i !== index) {
+                          e.target.style.backgroundColor = colors.text.secondary;
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (i !== index) {
+                          e.target.style.backgroundColor = colors.border.primary;
+                        }
+                      }}
                     />
                   ))}
                 </div>

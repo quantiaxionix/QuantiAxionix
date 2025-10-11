@@ -1,10 +1,19 @@
 // src/components/HomeHero.jsx
 import React from "react";
-import homeVideo from "../../assets/home.mp4"; // adjust path if needed
+import { useTheme } from "../../ThemeProvider";
+import homeVideo from "../../assets/home-c.mp4"; // adjust path if needed
 
 export default function HomeHero() {
+  const { colors } = useTheme();
+  
   return (
-    <main className="bg-[#000000] text-white">
+    <main 
+      className="transition-colors duration-300"
+      style={{
+        backgroundColor: colors.bg.primary,
+        color: colors.text.primary,
+      }}
+    >
       {/* Video hero */}
       <section id="home" className="w-full overflow-hidden">
         <div className="relative w-full h-[50vh] md:h-[55vh] lg:h-[58vh]">
@@ -35,7 +44,10 @@ export default function HomeHero() {
           </h2>
 
           {/* Right side paragraph */}
-          <p className="text-base md:text-lg lg:text-xl text-white/90 leading-relaxed">
+          <p 
+            className="text-base md:text-lg lg:text-xl leading-relaxed"
+            style={{ color: colors.text.secondary }}
+          >
             We design and engineer end-to-end software and SaaS products infused
             with AI to automate workflows, accelerate delivery, and drive
             measurable growth.

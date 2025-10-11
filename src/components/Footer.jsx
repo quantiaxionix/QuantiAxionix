@@ -1,16 +1,26 @@
 // src/components/Footer.jsx
 import { motion } from "framer-motion";
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
+import { useTheme } from "../ThemeProvider";
 
 export default function Footer() {
+  const { colors } = useTheme();
+  
   return (
-    <footer className="w-full bg-black text-white px-8 py-16 border-t border-white/20">
+    <footer 
+      className="w-full px-8 py-16 border-t transition-colors duration-300"
+      style={{
+        backgroundColor: colors.bg.primary,
+        color: colors.text.primary,
+        borderColor: colors.border.primary,
+      }}
+    >
       {/* GRID SECTIONS */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-white/20 pb-12">
         {/* Left */}
         <div>
           <h3 className="font-bold mb-3">Menu</h3>
-          <ul className="space-y-2 text-white/70">
+          <ul className="space-y-2" style={{ color: colors.text.secondary }}>
             <li>Home</li>
             <li>Product</li>
             <li>About</li>
@@ -20,7 +30,7 @@ export default function Footer() {
         {/* Left Center */}
         <div>
           <h3 className="font-bold mb-3">Company</h3>
-          <ul className="space-y-2 text-white/70">
+          <ul className="space-y-2" style={{ color: colors.text.secondary }}>
             <li>Career</li>
             <li>Contact</li>
           </ul>
@@ -29,7 +39,10 @@ export default function Footer() {
         {/* Center */}
         <div>
           <h3 className="font-bold mb-3">Legal</h3>
-          <p className="text-white/70 text-sm leading-relaxed">
+          <p 
+            className="text-sm leading-relaxed"
+            style={{ color: colors.text.secondary }}
+          >
             Privacy policy & Imprint
             <br />
             Quanti Axionix
@@ -47,7 +60,10 @@ export default function Footer() {
         {/* Right */}
         <div>
           <h3 className="font-bold mb-3">Locations</h3>
-          <p className="text-white/70 text-sm leading-relaxed">
+          <p 
+            className="text-sm leading-relaxed"
+            style={{ color: colors.text.secondary }}
+          >
             241W 30th St., 10001 New York, United States
             <br />
             Hollandstraße 10/47, 1020 Vienna, Austria
@@ -60,7 +76,10 @@ export default function Footer() {
       </div>
 
       {/* TRUE INFINITE MARQUEE */}
-      <div className="overflow-hidden border-b border-white/20 py-12 relative">
+      <div 
+        className="overflow-hidden border-b py-12 relative"
+        style={{ borderColor: colors.border.primary }}
+      >
         <motion.div
           className="flex whitespace-nowrap"
           animate={{ x: ["0%", "-100%"] }}
@@ -71,9 +90,18 @@ export default function Footer() {
             {Array.from({ length: 6 }).map((_, i) => (
               <h2
                 key={i}
-                className="text-[10rem] md:text-[14rem] font-extrabold tracking-tight text-gray-700 hover:text-white transition-colors cursor-pointer px-8"
+                className="text-[10rem] md:text-[14rem] font-extrabold tracking-tight transition-colors cursor-pointer px-8"
+                style={{ 
+                  color: colors.text.muted,
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.color = colors.text.primary;
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = colors.text.muted;
+                }}
               >
-                Let’s discuss today.
+                Let's discuss today.
               </h2>
             ))}
           </div>

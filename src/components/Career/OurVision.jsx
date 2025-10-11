@@ -1,5 +1,6 @@
 // src/components/OurVision.jsx
 import React from "react";
+import { useTheme } from "../../ThemeProvider";
 import logo from "../../assets/logo.png"; // ensure this exists at src/assets/logo.png
 
 /**
@@ -25,18 +26,24 @@ export default function OurVision({
   ],
   lineColor = "#374151",
 }) {
+  const { colors } = useTheme();
+  
   return (
     <section
       id="our-vision"
-      className="w-full bg-black text-white relative py-16 md:py-24 px-0"
-      style={{ fontFamily: "'Playfair Display', serif" }}
+      className="w-full relative py-16 md:py-24 px-0 transition-colors duration-300"
+      style={{ 
+        fontFamily: "'Playfair Display', serif",
+        backgroundColor: colors.bg.primary,
+        color: colors.text.primary,
+      }}
       aria-labelledby="our-vision-heading"
     >
       {/* Full-width solid grey line at the very top */}
       <div
         aria-hidden="true"
         className="absolute top-0 left-0 w-full"
-        style={{ height: 2, background: lineColor }}
+        style={{ height: 2, background: colors.border.primary }}
       />
 
       {/* Content wrapper */}
@@ -54,7 +61,7 @@ export default function OurVision({
             id="our-vision-heading"
             className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight"
           >
-            <span className="block" style={{ color: "#ffffff" }}>
+            <span className="block" style={{ color: colors.text.primary }}>
               {headlineLine1}
             </span>
             <span className="block" style={{ color: accentColor }}>
@@ -69,14 +76,20 @@ export default function OurVision({
             {descriptionLines.map((line, idx) => (
               <p
                 key={idx}
-                className="text-xs md:text-sm lg:text-sm text-white/70 leading-relaxed mb-3"
-                style={{ lineHeight: 1.6 }}
+                className="text-xs md:text-sm lg:text-sm leading-relaxed mb-3"
+                style={{ 
+                  lineHeight: 1.6,
+                  color: colors.text.secondary,
+                }}
               >
                 {line}
               </p>
             ))}
 
-            <p className="mt-4 text-xs md:text-sm text-white/60">
+            <p 
+              className="mt-4 text-xs md:text-sm"
+              style={{ color: colors.text.muted }}
+            >
               We partner with product teams to turn ideas into resilient SaaS and full-stack systems that scale.
             </p>
           </div>

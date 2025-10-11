@@ -1,5 +1,6 @@
 // src/components/ContactSection.jsx
 import React, { useState } from "react";
+import { useTheme } from "../../ThemeProvider";
 
 /**
  * ContactSection.jsx — updated
@@ -8,7 +9,8 @@ import React, { useState } from "react";
  * - Form "card" is a completed rectangle (no rounded corners)
  * - Big 3-line heading at top-left, small email at bottom-left
  * - Wider form, dotted glowing background and dotted ring remain
- * - Inputs are underline-only; submit button text is white
+ * - Inputs are underline-only; submit button text is theme-aware
+ * - Theme-aware styling throughout
  *
  * Make sure Playfair Display is included in public/index.html:
  * <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -18,6 +20,7 @@ export default function ContactSection({
   accentColor = "#0097b2",
   contactEmail = "hello@quantiaxionix.com",
 }) {
+  const { colors } = useTheme();
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -82,11 +85,18 @@ export default function ContactSection({
   return (
     <section
       id="contact"
-      className="w-full bg-black text-white py-20 px-6 relative overflow-hidden"
-      style={{ fontFamily: "'Playfair Display', serif" }}
+      className="w-full py-20 px-6 relative overflow-hidden transition-colors duration-300"
+      style={{ 
+        fontFamily: "'Playfair Display', serif",
+        backgroundColor: colors.bg.primary,
+        color: colors.text.primary,
+      }}
     >
       {/* thin full-width top line */}
-      <div className="absolute top-0 left-0 w-full" style={{ height: 2, background: "#374151" }} />
+      <div 
+        className="absolute top-0 left-0 w-full" 
+        style={{ height: 2, background: colors.border.primary }} 
+      />
 
       <div className="max-w-7xl mx-auto relative">
         <div className="grid md:grid-cols-2 gap-12 items-start">
@@ -97,7 +107,7 @@ export default function ContactSection({
               <h2
                 className="leading-tight mb-6"
                 style={{
-                  color: "#ffffff",
+                  color: colors.text.primary,
                   fontSize: "clamp(2.5rem, 6vw, 5.5rem)",
                   lineHeight: 0.88,
                   fontWeight: 900,
@@ -110,18 +120,30 @@ export default function ContactSection({
                 </span>
               </h2>
 
-              <p className="text-sm text-white/60 leading-relaxed mb-6 max-w-lg">
-                Whether you’re a brand, partner, investor, or just curious, we’d love to hear from you. Fill out the form
-                or reach out directly — we’ll get back to you as soon as possible.
+              <p 
+                className="text-sm leading-relaxed mb-6 max-w-lg"
+                style={{ color: colors.text.muted }}
+              >
+                Whether you're a brand, partner, investor, or just curious, we'd love to hear from you. Fill out the form
+                or reach out directly — we'll get back to you as soon as possible.
               </p>
             </div>
 
             {/* Bottom-left: small note + email */}
             <div>
-              <p className="text-sm text-white/70 mb-3">Or just wanna say hi?</p>
+              <p 
+                className="text-sm mb-3"
+                style={{ color: colors.text.secondary }}
+              >
+                Or just wanna say hi?
+              </p>
               <a
                 href={`mailto:${contactEmail}`}
-                className="inline-block text-sm md:text-base font-medium bg-white text-black px-4 py-2"
+                className="inline-block text-sm md:text-base font-medium px-4 py-2 transition-colors duration-300"
+                style={{
+                  backgroundColor: colors.text.primary,
+                  color: colors.bg.primary,
+                }}
               >
                 {contactEmail}
               </a>
@@ -185,12 +207,12 @@ export default function ContactSection({
 
             {/* Form rectangle (sharp corners) */}
             <div
-              className="relative z-10 p-10"
+              className="relative z-10 p-10 transition-colors duration-300"
               style={{
                 width: "min(720px, 94vw)",
-                background: "linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))",
-                border: "1px solid rgba(255,255,255,0.06)",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.75)",
+                backgroundColor: colors.bg.card,
+                border: `1px solid ${colors.border.secondary}`,
+                boxShadow: `0 20px 60px ${colors.shadow.lg}`,
                 borderRadius: 0, // sharp corners
               }}
             >
@@ -205,53 +227,114 @@ export default function ContactSection({
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs text-white/70">Name</label>
+                    <label 
+                      className="block text-xs"
+                      style={{ color: colors.text.secondary }}
+                    >
+                      Name
+                    </label>
                     <input
                       type="text"
                       value={form.name}
                       onChange={update("name")}
                       placeholder="Your name"
-                      className="mt-2 w-full bg-transparent text-white placeholder:text-white/40 py-3 px-0 border-0 border-b border-white/10 focus:border-b-[#0097b2] focus:outline-none transition"
+                      className="mt-2 w-full bg-transparent py-3 px-0 border-0 border-b focus:border-b-[#0097b2] focus:outline-none transition"
+                      style={{
+                        color: colors.text.primary,
+                        borderColor: colors.border.primary,
+                      }}
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs text-white/70">Phone number</label>
+                    <label 
+                      className="block text-xs"
+                      style={{ color: colors.text.secondary }}
+                    >
+                      Phone number
+                    </label>
                     <input
                       type="tel"
                       value={form.phone}
                       onChange={update("phone")}
                       placeholder="0301 2345678"
-                      className="mt-2 w-full bg-transparent text-white placeholder:text-white/40 py-3 px-0 border-0 border-b border-white/10 focus:border-b-[#0097b2] focus:outline-none transition"
+                      className="mt-2 w-full bg-transparent py-3 px-0 border-0 border-b focus:border-b-[#0097b2] focus:outline-none transition"
+                      style={{
+                        color: colors.text.primary,
+                        borderColor: colors.border.primary,
+                      }}
                       required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs text-white/70">Email</label>
+                  <label 
+                    className="block text-xs"
+                    style={{ color: colors.text.secondary }}
+                  >
+                    Email
+                  </label>
                   <input
                     type="email"
                     value={form.email}
                     onChange={update("email")}
                     placeholder="you@company.com"
-                    className="mt-2 w-full bg-transparent text-white placeholder:text-white/40 py-3 px-0 border-0 border-b border-white/10 focus:border-b-[#0097b2] focus:outline-none transition"
+                    className="mt-2 w-full bg-transparent py-3 px-0 border-0 border-b focus:border-b-[#0097b2] focus:outline-none transition"
+                    style={{
+                      color: colors.text.primary,
+                      borderColor: colors.border.primary,
+                    }}
                     required
                   />
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs text-white/70">Subject</label>
+                    <label 
+                      className="block text-xs"
+                      style={{ color: colors.text.secondary }}
+                    >
+                      Subject
+                    </label>
                     <select
                       value={form.subject}
                       onChange={update("subject")}
-                      className="mt-2 w-full bg-transparent text-white py-3 px-0 border-0 border-b border-white/10 focus:border-b-[#0097b2] focus:outline-none transition"
+                      className="mt-2 w-full bg-transparent py-3 px-0 border-0 border-b focus:border-b-[#0097b2] focus:outline-none transition"
+                      style={{
+                        color: colors.text.primary,
+                        borderColor: colors.border.primary,
+                        backgroundColor: colors.bg.card,
+                      }}
                     >
-                      <option value="Investment">Investment</option>
-                      <option value="Career">Career</option>
-                      <option value="Other">Other</option>
+                      <option 
+                        value="Investment"
+                        style={{
+                          backgroundColor: colors.bg.card,
+                          color: colors.text.primary,
+                        }}
+                      >
+                        Investment
+                      </option>
+                      <option 
+                        value="Career"
+                        style={{
+                          backgroundColor: colors.bg.card,
+                          color: colors.text.primary,
+                        }}
+                      >
+                        Career
+                      </option>
+                      <option 
+                        value="Other"
+                        style={{
+                          backgroundColor: colors.bg.card,
+                          color: colors.text.primary,
+                        }}
+                      >
+                        Other
+                      </option>
                     </select>
                   </div>
 
@@ -259,13 +342,22 @@ export default function ContactSection({
                 </div>
 
                 <div>
-                  <label className="block text-xs text-white/70">Message (Optional)</label>
+                  <label 
+                    className="block text-xs"
+                    style={{ color: colors.text.secondary }}
+                  >
+                    Message (Optional)
+                  </label>
                   <textarea
                     value={form.message}
                     onChange={update("message")}
                     rows={4}
                     placeholder="Tell us a bit about your inquiry (optional)"
-                    className="mt-2 w-full bg-transparent text-white placeholder:text-white/40 py-3 px-0 border-0 border-b border-white/10 focus:border-b-[#0097b2] focus:outline-none transition resize-none"
+                    className="mt-2 w-full bg-transparent py-3 px-0 border-0 border-b focus:border-b-[#0097b2] focus:outline-none transition resize-none"
+                    style={{
+                      color: colors.text.primary,
+                      borderColor: colors.border.primary,
+                    }}
                   />
                 </div>
 
@@ -273,15 +365,36 @@ export default function ContactSection({
                   <button
                     type="submit"
                     disabled={status.loading}
-                    className="inline-flex items-center justify-center px-6 py-3 font-medium border border-[#0097b2] text-white bg-transparent hover:bg-[#0097b2] hover:text-black transition disabled:opacity-60"
-                    style={{ borderRadius: 0 }}
+                    className="inline-flex items-center justify-center px-6 py-3 font-medium border border-[#0097b2] bg-transparent hover:bg-[#0097b2] transition disabled:opacity-60"
+                    style={{ 
+                      borderRadius: 0,
+                      color: colors.text.primary,
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!status.loading) {
+                        e.target.style.color = colors.bg.primary;
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!status.loading) {
+                        e.target.style.color = colors.text.primary;
+                      }
+                    }}
                   >
                     {status.loading ? "Sending…" : "Send message"}
                   </button>
                 </div>
 
-                {status.error && <p className="text-sm text-red-400 mt-2">{status.error}</p>}
-                {status.success && <p className="text-sm text-green-400 mt-2">{status.success}</p>}
+                {status.error && (
+                  <p className="text-sm mt-2" style={{ color: '#ef4444' }}>
+                    {status.error}
+                  </p>
+                )}
+                {status.success && (
+                  <p className="text-sm mt-2" style={{ color: '#10b981' }}>
+                    {status.success}
+                  </p>
+                )}
               </form>
             </div>
           </div>
