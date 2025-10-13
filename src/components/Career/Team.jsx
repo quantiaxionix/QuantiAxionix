@@ -75,6 +75,7 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(true);
   const [locked, setLocked] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // refs & control
   const sectionRef = useRef(null);
@@ -129,10 +130,10 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
     }
   }
 
-  // wheel/touch handlers (take over when locked)
+  // wheel/touch handlers (take over when locked) - only on desktop
   useEffect(() => {
     const el = sectionRef.current;
-    if (!el) return;
+    if (!el || isMobile) return; // Skip complex scrolling on mobile
 
     function onWheel(e) {
       if (!locked) return; // only intercept when locked
@@ -149,14 +150,14 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
         if (seenAll && index === members.length - 1) {
           unlockAndNudge(1);
         } else {
-          showNext();
+          animatedSetIndex(index + 1);
         }
       } else {
         // scroll up -> previous
         if (seenAll && index === 0) {
           unlockAndNudge(-1);
         } else {
-          showPrev();
+          animatedSetIndex(index - 1);
         }
       }
     }
@@ -179,11 +180,11 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
       if (dy > 0) {
         // swipe up => next
         if (seenAll && index === members.length - 1) unlockAndNudge(1);
-        else showNext();
+        else animatedSetIndex(index + 1);
       } else {
         // swipe down => prev
         if (seenAll && index === 0) unlockAndNudge(-1);
-        else showPrev();
+        else animatedSetIndex(index - 1);
       }
     }
 
@@ -197,7 +198,7 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
       el.removeEventListener("touchstart", onTouchStart);
       el.removeEventListener("touchend", onTouchEnd);
     };
-  }, [locked, index, members.length]);
+  }, [locked, index, members.length, isMobile, animatedSetIndex]);
 
   // keyboard navigation while locked
   useEffect(() => {
@@ -218,10 +219,10 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [locked, index, members.length]);
 
-  // IntersectionObserver: lock when sentinel (slightly above bottom) becomes visible in viewport
+  // IntersectionObserver: lock when sentinel (slightly above bottom) becomes visible in viewport - only on desktop
   useEffect(() => {
     const sentinelEl = sentinelRef.current;
-    if (!sentinelEl) return;
+    if (!sentinelEl || isMobile) return; // Skip scroll locking on mobile
 
     const io = new IntersectionObserver(
       (entries) => {
@@ -259,12 +260,23 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
       document.body.style.overflow = prevBodyOverflowRef.current || "";
       setLocked(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index]);
+  }, [index, isMobile]);
 
   // ensure seen set includes initial index
   useEffect(() => {
     seenRef.current.add(0);
+  }, []);
+
+  // Detect mobile devices and disable complex scrolling
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   // helper to jump to a particular member (e.g., via dots)
@@ -448,6 +460,46 @@ export default function Team({ accentColor = "#0097b2", members = MEMBERS }) {
               </div>
 
               <div className="mt-6" style={{ opacity: visible ? 1 : 0 }}>
+                {/* Mobile Navigation Buttons */}
+                {isMobile && (
+                  <div className="flex gap-3 mb-4 md:hidden">
+                    <button
+                      onClick={() => goTo(index > 0 ? index - 1 : members.length - 1)}
+                      className="px-4 py-2 text-sm font-medium border transition-colors duration-300"
+                      style={{
+                        borderColor: colors.border.primary,
+                        color: colors.text.primary,
+                        backgroundColor: colors.bg.card,
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = colors.bg.hover;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = colors.bg.card;
+                      }}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      onClick={() => goTo(index < members.length - 1 ? index + 1 : 0)}
+                      className="px-4 py-2 text-sm font-medium border transition-colors duration-300"
+                      style={{
+                        borderColor: colors.border.primary,
+                        color: colors.text.primary,
+                        backgroundColor: colors.bg.card,
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = colors.bg.hover;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = colors.bg.card;
+                      }}
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+                
                 <div className="mt-4 flex gap-2 items-center">
                   {members.map((m, i) => (
                     <button

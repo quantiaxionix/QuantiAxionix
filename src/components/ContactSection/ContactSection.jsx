@@ -99,9 +99,9 @@ export default function ContactSection({
       />
 
       <div className="max-w-7xl mx-auto relative">
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
           {/* LEFT: Big headline (top) + description (under heading) + email (bottom) */}
-          <div className="flex flex-col justify-between" style={{ minHeight: 560 }}>
+          <div className="flex flex-col justify-between lg:min-h-[560px]">
             <div>
               {/* Big 3-line heading at top-left */}
               <h2
@@ -152,14 +152,14 @@ export default function ContactSection({
 
           {/* RIGHT: Wider form rectangle with dotted glowing pattern behind and dotted ring */}
           <div className="relative flex justify-center md:justify-start items-start">
-            {/* LARGE dotted glowing pattern behind the whole form */}
+            {/* LARGE dotted glowing pattern behind the whole form - hidden on mobile */}
             <svg
               aria-hidden="true"
-              className="absolute -z-10"
+              className="absolute -z-10 hidden lg:block"
               width="760"
               height="760"
               viewBox="0 0 760 760"
-              style={{ left: "-40px", top: "-60px", opacity: 0.9, filter: "blur(28px)" }}
+              style={{ left: "-40px", top: "-60px", opacity: 0.6, filter: "blur(28px)" }}
             >
               <defs>
                 <pattern id="dotsPattern" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
@@ -176,14 +176,14 @@ export default function ContactSection({
               <circle cx="380" cy="220" r="220" fill="url(#glowGrad)" />
             </svg>
 
-            {/* dotted ring around the form rectangle */}
+            {/* dotted ring around the form rectangle - hidden on mobile */}
             <svg
               aria-hidden="true"
-              className="absolute -z-10"
-              width="520"
-              height="520"
-              viewBox="0 0 520 520"
-              style={{ right: "-28px", top: "-16px", opacity: 0.75, filter: "blur(8px)" }}
+              className="absolute -z-10 hidden md:block"
+              width="420"
+              height="420"
+              viewBox="0 0 420 420"
+              style={{ right: "-28px", top: "-16px", opacity: 0.5, filter: "blur(8px)" }}
             >
               <defs>
                 <pattern id="smallDots" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
@@ -198,21 +198,21 @@ export default function ContactSection({
                 </filter>
               </defs>
 
-              <rect x="0" y="0" width="520" height="520" fill="url(#smallDots)" opacity="0.06" />
-              <g transform="translate(260,260)">
-                <circle r="210" fill="none" stroke={accentColor} strokeWidth="1.5" strokeDasharray="4 8" strokeOpacity="0.14" filter="url(#softGlow)" />
-                <circle r="172" fill="none" stroke={accentColor} strokeWidth="1" strokeDasharray="2 6" strokeOpacity="0.08" />
+              <rect x="0" y="0" width="420" height="420" fill="url(#smallDots)" opacity="0.06" />
+              <g transform="translate(210,210)">
+                <circle r="170" fill="none" stroke={accentColor} strokeWidth="1.5" strokeDasharray="4 8" strokeOpacity="0.14" filter="url(#softGlow)" />
+                <circle r="140" fill="none" stroke={accentColor} strokeWidth="1" strokeDasharray="2 6" strokeOpacity="0.08" />
               </g>
             </svg>
 
             {/* Form rectangle (sharp corners) */}
             <div
-              className="relative z-10 p-10 transition-colors duration-300"
+              className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-10 transition-colors duration-300"
               style={{
-                width: "min(720px, 94vw)",
+                width: "min(720px, 96vw)",
                 backgroundColor: colors.bg.card,
                 border: `1px solid ${colors.border.secondary}`,
-                boxShadow: `0 20px 60px ${colors.shadow.lg}`,
+                boxShadow: `0 10px 30px ${colors.shadow.md}`,
                 borderRadius: 0, // sharp corners
               }}
             >
