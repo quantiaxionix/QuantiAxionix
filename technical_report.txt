@@ -1,0 +1,63 @@
+### **QuantiAxionix Project: Technical Report**
+
+**Date:** October 15, 2025
+
+#### **1. Project Overview & Objectives**
+
+The primary objective of the recent development cycle was a comprehensive overhaul of the entire frontend application to ensure full mobile responsiveness and to modernize the user experience. This involved a systematic rewrite of all major components, the integration of a modern animation library, and the establishment of a robust responsive design system. The project is a Single Page Application (SPA) built with React and Vite.
+
+#### **2. Core Technology Stack**
+
+The project leverages a modern, performance-oriented technology stack:
+
+*   **Core Framework:** **React 19.1.1** (utilizing functional components and hooks).
+*   **Build Tool & Dev Server:** **Vite 7.1.2** provides a fast development experience and optimized builds.
+*   **Styling:** **Tailwind CSS 4.1.13** is used for utility-first styling. It is integrated directly into the Vite build process via `@tailwindcss/vite`.
+*   **Animation:** **Framer Motion 12.23.13** is implemented for all UI animations, including page transitions and scroll-triggered effects.
+*   **Routing:** **React Router DOM 6.30.1** manages all client-side routing.
+*   **Icons:** **React Icons 5.5.0** provides a comprehensive library of SVG icons.
+*   **Smooth Scrolling:** **`@studio-freight/lenis` 1.0.42** is used to implement a smooth, high-performance scrolling experience.
+
+#### **3. Project Architecture**
+
+The application is structured for scalability, maintainability, and a clear separation of concerns.
+
+*   **Component-Based Structure:** The UI is broken down into reusable components located in `src/components`, categorized by page or feature (e.g., `Home`, `Career`, `Shared`).
+*   **Centralized Theming:** A custom `ThemeProvider.jsx` (React Context) provides global access to theme properties like colors and dark/light mode state. This allows for dynamic and consistent styling across the application.
+*   **Routing Model:** `App.jsx` serves as the main entry point, defining the application's routes (`/`, `/career`, `/blogs`, `/contact`).
+*   **Page Composition:** Each page (e.g., `HomeMain`, `CareerPage`) is a container component that composes smaller, feature-specific components.
+*   **Global Styles & Fonts:** The primary font, **Playfair Display**, is imported from Google Fonts in `index.html`. Base styles and Tailwind CSS layers are configured in `index.css`.
+
+#### **4. Mobile Responsiveness Overhaul: Status & Key Achievements**
+
+The core of the recent work has been a complete rewrite of the application's components to be mobile-first and fully responsive.
+
+*   **Completed Rewrites (11 Components):**
+    *   **Core Layout:** `Navbar.jsx`, `Footer.jsx`, `App.jsx`.
+    *   **Home Page:** `HomeHero.jsx`, `CompanyIntro.jsx`, `ProblemStatement.jsx`, `SolutionSection.jsx`, `ContactLanding.jsx`.
+    *   **Career Page:** `CareerHero.jsx`, `OurStory.jsx`, `OurVision.jsx`.
+
+*   **Key Responsive Features Implemented:**
+    *   **Responsive Breakpoints:** A consistent system of breakpoints (`xs`, `sm`, `md`, `lg`, `xl`) is used across all rewritten components.
+    *   **Fluid Typography & Spacing:** Font sizes, padding, and margins scale progressively with screen size.
+    *   **Adaptive Grids:** Layouts transition seamlessly from single-column (mobile) to multi-column (desktop) using Tailwind's responsive grid utilities.
+    *   **Mobile Navigation:** The `Navbar` now features a fully animated, accessible hamburger menu for mobile devices.
+
+#### **5. Animation & User Experience**
+
+Framer Motion has been deeply integrated to create a polished and dynamic user experience.
+
+*   **Page Transitions:** `AnimatePresence` in `App.jsx` wraps the router to provide smooth, animated transitions between pages.
+*   **Scroll-Triggered Animations:** Components animate into view as the user scrolls, using `whileInView` to create an engaging discovery experience.
+*   **Micro-interactions:** Hover effects, button presses, and other small interactions are animated to provide satisfying visual feedback.
+
+#### **6. Remaining Work & Next Steps**
+
+While the majority of the application has been modernized, the following components are pending a responsive rewrite to complete the overhaul:
+
+*   `Career/Team.jsx`
+*   `Career/JobOpenings.jsx`
+*   `ContactSection/ContactSection.jsx`
+*   `Blogs/BlogsComingSoon.jsx`
+
+Completing these will bring the entire application to a consistent standard of quality and responsiveness.
